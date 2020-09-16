@@ -1,0 +1,16 @@
+diff --git a/node_modules/ibackuptool/tools/reports/backups/list.js b/node_modules/ibackuptool/tools/reports/backups/list.js
+index 525f6cf..ace8787 100644
+--- a/node_modules/ibackuptool/tools/reports/backups/list.js
++++ b/node_modules/ibackuptool/tools/reports/backups/list.js
+@@ -20,7 +20,10 @@ module.exports = {
+         result.info = await lib.run('backup.info', { backup: id }).catch(() => {}) || {}
+         result.manifest = await lib.run('backup.manifest', { backup: id }).catch(() => {}) || {}
+ 
+-        results.push(result)
++        // Do not list empty backups since output functions will not work for them
++        if (result.status.backupState !== 'empty') {
++          results.push(result)
++        }
+       }
+ 
+       resolve(results)
